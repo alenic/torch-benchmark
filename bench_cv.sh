@@ -6,7 +6,7 @@ do
     let batch_size*=2
     for num_workers in {0..4}
     do
-        python3 benchmark.py \
+        python3 benchmark_cv.py \
         --root $DATASET_ROOT/GPR1200/images \
         --batch_size $batch_size \
         --num_workers $num_workers \
