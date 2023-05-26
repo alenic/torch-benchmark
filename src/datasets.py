@@ -14,7 +14,7 @@ def cv2_loader(file):
     return image_rgb
 
 class ImageDataset(torch.utils.data.Dataset):
-    def __init__(self, folder, transform=None, loader=pil_loader):
+    def __init__(self, folder, transform=None, loader=pil_loader, albumentations=False):
         # Get all files recursively
         self.files = []
         for path, curr_dir, files in os.walk(folder):
@@ -23,6 +23,7 @@ class ImageDataset(torch.utils.data.Dataset):
         
         self.transform = transform
         self.loader = loader
+        self.albumentations = albumentations
     
     def __len__(self):
         return len(self.files)
@@ -32,7 +33,10 @@ class ImageDataset(torch.utils.data.Dataset):
         image = self.loader(file)
     
         if self.transform is not None:
-            image = self.transform(image)
+            if self.albumentations:
+                image = self.transform(image=image)["image"]
+            else:
+                image = self.transform(image)
         
         return image, torch.tensor(0).long()
         

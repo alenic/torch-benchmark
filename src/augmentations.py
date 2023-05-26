@@ -21,6 +21,7 @@ def alb_aug(image_size, eval=False):
     if eval:
         return A.Compose([
             A.Resize(height=image_size, width=image_size),
+            A.Normalize(mean=0, std=1),
             ToTensorV2()
         ])
     
@@ -29,6 +30,7 @@ def alb_aug(image_size, eval=False):
             A.RandomResizedCrop(height=image_size, width=image_size, scale=(0.8,1)),
             A.HorizontalFlip(),
             A.ColorJitter(0.1, 0.1, 0.1, 0.1, p=1),
+            A.Normalize(mean=0, std=1),
             ToTensorV2()
         ])
 

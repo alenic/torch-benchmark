@@ -30,11 +30,13 @@ if __name__ == "__main__":
     if args.loader == "pil":
         loader = pil_loader
         tr = pil_aug(args.img_size, args.eval)
+        albumentations = False
     elif args.loader == "cv2":
         loader = cv2_loader
         tr = alb_aug(args.img_size, args.eval)
-
-    dataset = ImageDataset(args.root, transform=tr, loader=loader)
+        albumentations = True
+    
+    dataset = ImageDataset(args.root, transform=tr, loader=loader, albumentations=albumentations)
     dataset = torch.utils.data.Subset(dataset, range(args.n_iter))
 
     if not args.eval:
