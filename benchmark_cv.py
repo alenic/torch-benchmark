@@ -63,6 +63,3 @@ if __name__ == "__main__":
         
         bench_results = eval_bench_cv(model, val_loader, args)
     
-    #plt.plot(train_iter_time)
-    #plt.plot(val_iter_time)
-    #plt.show()
