@@ -1,7 +1,6 @@
 import argparse
 import torch
 import timm
-import matplotlib.pyplot as plt
 from src import *
 
 if __name__ == "__main__":
@@ -35,31 +34,36 @@ if __name__ == "__main__":
         loader = cv2_loader
         tr = alb_aug(args.img_size, args.eval)
         albumentations = True
-    
-    dataset = ImageDataset(args.root, transform=tr, loader=loader, albumentations=albumentations)
+
+    dataset = ImageDataset(
+        args.root, transform=tr, loader=loader, albumentations=albumentations
+    )
     dataset = torch.utils.data.Subset(dataset, range(args.n_iter))
 
     if not args.eval:
-        train_loader = torch.utils.data.DataLoader(dataset,
-                                            batch_size=args.batch_size,
-                                            num_workers=args.num_workers,
-                                            shuffle=True,
-                                            pin_memory=args.pin_memory,
-                                            drop_last=True)
+        train_loader = torch.utils.data.DataLoader(
+            dataset,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            shuffle=True,
+            pin_memory=args.pin_memory,
+            drop_last=True,
+        )
         if len(train_loader) <= 1:
             raise ValueError("max iterations <= 1!")
 
         bench_results = train_bench_cv(model, train_loader, optimizer, criterion, args)
-    
+
     else:
-        val_loader = torch.utils.data.DataLoader(dataset,
-                                                batch_size=args.batch_size,
-                                                num_workers=args.num_workers,
-                                                shuffle=False,
-                                                pin_memory=args.pin_memory,
-                                                drop_last=True)
+        val_loader = torch.utils.data.DataLoader(
+            dataset,
+            batch_size=args.batch_size,
+            num_workers=args.num_workers,
+            shuffle=False,
+            pin_memory=args.pin_memory,
+            drop_last=True,
+        )
         if len(val_loader) <= 1:
             raise ValueError("max iterations <= 1!")
-        
+
         bench_results = eval_bench_cv(model, val_loader, args)
-    
