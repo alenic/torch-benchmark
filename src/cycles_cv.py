@@ -1,7 +1,6 @@
 import numpy as np
 import torch
 import time
-from tqdm import tqdm
 from src import Timer
 
 
@@ -9,20 +8,26 @@ def train_bench_cv(model, train_loader, optimizer, criterion, args):
     model.train()
 
     # Warmup
-    for iter, (image, label) in enumerate(tqdm(train_loader)):
+    for iter, (image, label) in enumerate(train_loader):
         image = image.to(args.device)
         break
+
+    iteration_timer = Timer()
+    dataloader_timer = Timer()
 
     train_iter_time = []
     train_data_time = []
     train_total_time = time.perf_counter()
 
-    for iter, (image, label) in enumerate(tqdm(train_loader)):
+    for iter, (image, label) in enumerate(train_loader):
         if iter >= 1:
-            time_iter = time.perf_counter()
-            time_data = time.perf_counter() - time_data
-            train_data_time.append(time_data)
+            # DataLoader TOC
+            train_data_time.append(dataloader_timer.toc())
 
+        # Iter TIC
+        iteration_timer.tic()
+
+        # ======= Iteration =======
         image = image.to(args.device)
         label = label.to(args.device)
 
@@ -32,12 +37,13 @@ def train_bench_cv(model, train_loader, optimizer, criterion, args):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+        # =========================
 
-        if iter >= 1:
-            train_iter_time.append(time.perf_counter() - time_iter)
+        # Iter TOC
+        train_iter_time.append(iteration_timer.toc())
 
-        time_data = time.perf_counter()
-
+        # DataLoader TIC
+        dataloader_timer.tic()
         if iter == args.n_iter:
             break
 
@@ -63,14 +69,14 @@ def eval_bench_cv(model, val_loader, args):
     model.eval()
 
     # Warmup
-    for iter, (image, label) in enumerate(tqdm(val_loader)):
+    for iter, (image, label) in enumerate(val_loader):
         image = image.to(args.device)
         break
 
     val_iter_time = []
     val_data_time = []
     val_total_time = time.perf_counter()
-    for iter, (image, label) in enumerate(tqdm(val_loader)):
+    for iter, (image, label) in enumerate(val_loader):
         if iter >= 1:
             time_iter = time.perf_counter()
             time_data = time.perf_counter() - time_data
