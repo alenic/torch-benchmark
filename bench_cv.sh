@@ -1,5 +1,5 @@
 #!/bin/bash
-# batch_size=8
+batch_size=8
 
 for batch_exp in {1..3}
 do
