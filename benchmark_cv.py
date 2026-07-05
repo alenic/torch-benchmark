@@ -13,10 +13,13 @@ if __name__ == "__main__":
     parser.add_argument("--img_size", type=int, default=224)
     parser.add_argument("--num_classes", type=int, default=10)
     parser.add_argument("--pin_memory", action="store_true")
-    parser.add_argument("--n_iter", type=int, default=500)
+    parser.add_argument("--n_images", type=int, default=1000)
     parser.add_argument("--eval", action="store_true")
     parser.add_argument("--device", type=str, default="cuda:0")
     args = parser.parse_args()
+
+    if args.n_images <= 0:
+        raise ValueError("--n_images must be > 0")
 
     seed_all(42)
 
@@ -38,7 +41,6 @@ if __name__ == "__main__":
     dataset = ImageDataset(
         args.root, transform=tr, loader=loader, albumentations=albumentations
     )
-    dataset = torch.utils.data.Subset(dataset, range(args.n_iter))
 
     if not args.eval:
         train_loader = torch.utils.data.DataLoader(
@@ -49,10 +51,14 @@ if __name__ == "__main__":
             pin_memory=args.pin_memory,
             drop_last=True,
         )
-        if len(train_loader) <= 1:
-            raise ValueError("max iterations <= 1!")
+        if len(train_loader) == 0:
+            raise ValueError("train loader is empty")
 
         bench_results = train_bench_cv(model, train_loader, optimizer, criterion, args)
+        print_bench(    
+            f"TRAIN ------------- Model {args.model}, Batch: {args.batch_size}, Num Workers {args.num_workers}, Pin {args.pin_memory}",
+            bench_results
+        )
 
     else:
         val_loader = torch.utils.data.DataLoader(
@@ -63,7 +69,11 @@ if __name__ == "__main__":
             pin_memory=args.pin_memory,
             drop_last=True,
         )
-        if len(val_loader) <= 1:
-            raise ValueError("max iterations <= 1!")
+        if len(val_loader) == 0:
+            raise ValueError("validation loader is empty")
 
         bench_results = eval_bench_cv(model, val_loader, args)
+        print_bench(    
+            f" VAL ------------- Model {args.model}, Batch: {args.batch_size}, Num Workers {args.num_workers}, Pin {args.pin_memory}",
+            bench_results
+        )

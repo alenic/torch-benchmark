@@ -1,113 +1,133 @@
-import numpy as np
-import torch
 import time
-from src import Timer
+
+import torch
+
+
+def _sync_device(device):
+    device = torch.device(device)
+    if device.type == "cuda" and torch.cuda.is_available():
+        torch.cuda.synchronize(device)
+
+
+def _run_warmup_train_step(model, train_loader, optimizer, criterion, device):
+    image, label = next(iter(train_loader))
+    image = image.to(device, non_blocking=True)
+    label = label.to(device, non_blocking=True)
+
+    optimizer.zero_grad(set_to_none=True)
+    outputs = model(image)
+    loss = criterion(outputs, label)
+    loss.backward()
+    optimizer.step()
+
+    _sync_device(device)
+
+
+def _run_warmup_eval_step(model, val_loader, device):
+    image, label = next(iter(val_loader))
+    image = image.to(device, non_blocking=True)
+    label = label.to(device, non_blocking=True)
+
+    with torch.no_grad():
+        model(image)
+
+    _sync_device(device)
 
 
 def train_bench_cv(model, train_loader, optimizer, criterion, args):
     model.train()
 
-    # Warmup
-    for iter, (image, label) in enumerate(train_loader):
-        image = image.to(args.device)
-        break
+    # Warm up one full step so first timed iteration is not dominated by setup.
+    _run_warmup_train_step(model, train_loader, optimizer, criterion, args.device)
 
-    iteration_timer = Timer()
-    dataloader_timer = Timer()
-
+    total_images = 0
     train_iter_time = []
     train_data_time = []
-    train_total_time = time.perf_counter()
 
-    for iter, (image, label) in enumerate(train_loader):
-        if iter >= 1:
-            # DataLoader TOC
-            train_data_time.append(dataloader_timer.toc())
+    loader_iter = iter(train_loader)
+    _sync_device(args.device)
+    train_total_start = time.perf_counter()
 
-        # Iter TIC
-        iteration_timer.tic()
+    while total_images < args.n_images:
+        data_start = time.perf_counter()
+        try:
+            image, label = next(loader_iter)
+        except StopIteration:
+            break
+        train_data_time.append(time.perf_counter() - data_start)
 
-        # ======= Iteration =======
-        image = image.to(args.device)
-        label = label.to(args.device)
+        _sync_device(args.device)
+        iter_start = time.perf_counter()
 
+        image = image.to(args.device, non_blocking=True)
+        label = label.to(args.device, non_blocking=True)
+
+        optimizer.zero_grad(set_to_none=True)
         outputs = model(image)
         loss = criterion(outputs, label)
-
-        optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        # =========================
 
-        # Iter TOC
-        train_iter_time.append(iteration_timer.toc())
+        _sync_device(args.device)
+        train_iter_time.append(time.perf_counter() - iter_start)
+        total_images += len(image)
 
-        # DataLoader TIC
-        dataloader_timer.tic()
-        if iter == args.n_iter:
-            break
+    _sync_device(args.device)
+    train_total_time = time.perf_counter() - train_total_start
 
-    train_total_time = time.perf_counter() - train_total_time
-
-    bech_results = {
+    bench_results = {
+        "total_images": total_images,
         "total_time": train_total_time,
         "data_time": train_data_time,
         "iter_time": train_iter_time,
     }
 
-    print(
-        f"TRAIN ------------- Batch: {args.batch_size}, Num Workers {args.num_workers}, Pin {args.pin_memory}"
-    )
-    print(f"Data {np.mean(train_data_time)},  std: {np.std(train_data_time)}")
-    print(f"iter: {np.mean(train_iter_time)},  std: {np.std(train_iter_time)}")
-    print(f"Total {train_total_time}")
-
-    return bech_results
+    return bench_results
 
 
 def eval_bench_cv(model, val_loader, args):
     model.eval()
 
-    # Warmup
-    for iter, (image, label) in enumerate(val_loader):
-        image = image.to(args.device)
-        break
+    # Warm up one full forward pass so first timed iteration is representative.
+    _run_warmup_eval_step(model, val_loader, args.device)
 
+    total_images = 0
     val_iter_time = []
     val_data_time = []
-    val_total_time = time.perf_counter()
-    for iter, (image, label) in enumerate(val_loader):
-        if iter >= 1:
-            time_iter = time.perf_counter()
-            time_data = time.perf_counter() - time_data
-            val_data_time.append(time_data)
 
-        image = image.to(args.device)
-        label = label.to(args.device)
-        with torch.no_grad():
-            outputs = model(image)
+    loader_iter = iter(val_loader)
+    _sync_device(args.device)
+    val_total_start = time.perf_counter()
 
-        if iter >= 1:
-            val_iter_time.append(time.perf_counter() - time_iter)
-
-        time_data = time.perf_counter()
-
-        if iter == args.n_iter:
+    while total_images < args.n_images:
+        data_start = time.perf_counter()
+        try:
+            image, label = next(loader_iter)
+        except StopIteration:
             break
+        val_data_time.append(time.perf_counter() - data_start)
 
-    val_total_time = time.perf_counter() - val_total_time
+        _sync_device(args.device)
+        iter_start = time.perf_counter()
 
-    bech_results = {
+        image = image.to(args.device, non_blocking=True)
+        label = label.to(args.device, non_blocking=True)
+
+        with torch.no_grad():
+            model(image)
+
+        _sync_device(args.device)
+        val_iter_time.append(time.perf_counter() - iter_start)
+        total_images += len(image)
+
+    _sync_device(args.device)
+    val_total_time = time.perf_counter() - val_total_start
+
+    bench_results = {
+        "total_images": total_images,
         "total_time": val_total_time,
         "data_time": val_data_time,
         "iter_time": val_iter_time,
     }
 
-    print(
-        f" VAL ------------- Batch: {args.batch_size}, Num Workers {args.num_workers}, Pin {args.pin_memory}"
-    )
-    print(f"Data {np.mean(val_iter_time)},  std: {np.std(val_iter_time)}")
-    print(f"iter: {np.mean(val_iter_time)},  std: {np.std(val_iter_time)}")
-    print(f"Total {val_total_time}")
-
-    return bech_results
+    return bench_results
