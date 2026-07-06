@@ -16,7 +16,7 @@ def cv2_loader(file):
     return image_rgb
 
 
-class ImageDataset(torch.utils.data.Dataset):
+class ImageRecursiveDataset(torch.utils.data.Dataset):
     ALLOWED_EXT = [".jpg", ".jpeg", ".png", ".bmp", ".gif"]
 
     def __init__(self, folder, transform=None, loader=pil_loader, albumentations=False):

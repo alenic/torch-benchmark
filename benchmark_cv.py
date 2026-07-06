@@ -38,7 +38,7 @@ if __name__ == "__main__":
         tr = alb_aug(args.img_size, args.eval)
         albumentations = True
 
-    dataset = ImageDataset(
+    dataset = ImageRecursiveDataset(
         args.root, transform=tr, loader=loader, albumentations=albumentations
     )
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
         bench_results = train_bench_cv(model, train_loader, optimizer, criterion, args)
         print_bench(    
-            f"TRAIN ------------- Model {args.model}, Batch: {args.batch_size}, Num Workers {args.num_workers}, Pin {args.pin_memory}",
+            args,
             bench_results
         )
 
