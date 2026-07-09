@@ -1,0 +1,156 @@
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 0
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 35.95 %
+Images/sec: 86.61
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 2
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 1.33 %
+Images/sec: 134.41
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 4
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 1.41 %
+Images/sec: 136.87
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 6
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 1.84 %
+Images/sec: 135.56
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 0
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 39.49 %
+Images/sec: 103.36
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 2
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 2.72 %
+Images/sec: 165.10
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 4
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 3.86 %
+Images/sec: 162.85
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 6
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 2.69 %
+Images/sec: 163.72
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 0
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 41.34 %
+Images/sec: 102.66
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 2
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 5.23 %
+Images/sec: 165.14
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 4
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 5.38 %
+Images/sec: 164.33
+============= Results ===============
+phase: Train
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 6
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 7.76 %
+Images/sec: 158.99

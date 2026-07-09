@@ -39,7 +39,7 @@ def get_title(args):
     return title
 
 
-def print_bench( args, bench_results: dict[str, list[float]]):
+def print_bench(args, bench_results: dict[str, list[float]]):
     data_time_perc = sum(bench_results["data_time"]) / bench_results["total_time"]
     images_per_sec = bench_results["total_images"] / bench_results["total_time"]
 

@@ -74,6 +74,6 @@ if __name__ == "__main__":
 
         bench_results = eval_bench_cv(model, val_loader, args)
         print_bench(    
-            f"VAL ------------- Model {args.model}, Batch: {args.batch_size}, Num Workers {args.num_workers}, Pin {args.pin_memory}",
+            args,
             bench_results
         )
