@@ -1,73 +1,156 @@
-TRAIN ------------- Batch: 16, Num Workers 0, Pin False
-Data Time percentage: 32.79 %
-Images/sec: 92.08
-TRAIN ------------- Batch: 16, Num Workers 2, Pin False
-Data Time percentage: 1.88 %
-Images/sec: 131.18
-TRAIN ------------- Batch: 16, Num Workers 4, Pin False
-Data Time percentage: 1.85 %
-Images/sec: 127.42
-TRAIN ------------- Batch: 16, Num Workers 6, Pin False
-Data Time percentage: 1.92 %
-Images/sec: 130.03
-TRAIN ------------- Batch: 32, Num Workers 0, Pin False
-Data Time percentage: 37.51 %
-Images/sec: 104.89
-TRAIN ------------- Batch: 32, Num Workers 2, Pin False
-Data Time percentage: 2.66 %
-Images/sec: 154.31
-TRAIN ------------- Batch: 32, Num Workers 4, Pin False
-Data Time percentage: 2.84 %
-Images/sec: 158.75
-TRAIN ------------- Batch: 32, Num Workers 6, Pin False
-Data Time percentage: 2.81 %
-Images/sec: 157.76
-TRAIN ------------- Batch: 64, Num Workers 0, Pin False
-Data Time percentage: 38.73 %
-Images/sec: 104.93
-TRAIN ------------- Batch: 64, Num Workers 2, Pin False
-Data Time percentage: 4.61 %
-Images/sec: 160.00
-TRAIN ------------- Batch: 64, Num Workers 4, Pin False
-Data Time percentage: 4.82 %
-Images/sec: 159.64
-TRAIN ------------- Batch: 64, Num Workers 6, Pin False
-Data Time percentage: 4.80 %
-Images/sec: 159.50
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 0
+image loader: pil
+device: cuda:0
+pin memory: True
 
- VAL ------------- Model resnet50, Batch: 16, Num Workers 0, Pin False
-Data Time percentage: 35.37 %
-Images/sec: 381.37
- VAL ------------- Model resnet50, Batch: 16, Num Workers 2, Pin False
+Data Time percentage: 36.63 %
+Images/sec: 366.17
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 2
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 3.09 %
+Images/sec: 581.56
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 4
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 4.07 %
+Images/sec: 567.98
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 16
+workers: 6
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 6.55 %
+Images/sec: 545.83
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 0
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 40.11 %
+Images/sec: 380.92
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 2
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 4.67 %
+Images/sec: 593.69
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 4
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 6.80 %
+Images/sec: 571.09
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 32
+workers: 6
+image loader: pil
+device: cuda:0
+pin memory: True
+
 Data Time percentage: 4.61 %
-Images/sec: 513.03
- VAL ------------- Model resnet50, Batch: 16, Num Workers 4, Pin False
-Data Time percentage: 4.56 %
-Images/sec: 510.60
- VAL ------------- Model resnet50, Batch: 16, Num Workers 6, Pin False
-Data Time percentage: 4.83 %
-Images/sec: 510.17
- VAL ------------- Model resnet50, Batch: 32, Num Workers 0, Pin False
-Data Time percentage: 36.69 %
-Images/sec: 387.66
- VAL ------------- Model resnet50, Batch: 32, Num Workers 2, Pin False
-Data Time percentage: 4.73 %
-Images/sec: 535.37
- VAL ------------- Model resnet50, Batch: 32, Num Workers 4, Pin False
-Data Time percentage: 4.79 %
-Images/sec: 533.76
- VAL ------------- Model resnet50, Batch: 32, Num Workers 6, Pin False
-Data Time percentage: 4.79 %
-Images/sec: 534.55
- VAL ------------- Model resnet50, Batch: 64, Num Workers 0, Pin False
-Data Time percentage: 39.56 %
-Images/sec: 372.79
- VAL ------------- Model resnet50, Batch: 64, Num Workers 2, Pin False
-Data Time percentage: 7.46 %
-Images/sec: 540.54
- VAL ------------- Model resnet50, Batch: 64, Num Workers 4, Pin False
-Data Time percentage: 6.82 %
-Images/sec: 541.70
- VAL ------------- Model resnet50, Batch: 64, Num Workers 6, Pin False
-Data Time percentage: 7.06 %
-Images/sec: 541.25
+Images/sec: 574.62
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 0
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 42.17 %
+Images/sec: 377.31
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 2
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 8.07 %
+Images/sec: 586.33
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 4
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 7.30 %
+Images/sec: 540.16
+============= Results ===============
+phase: Eval
+model: resnet50
+classes: 10
+image size: 224
+batch size: 64
+workers: 6
+image loader: pil
+device: cuda:0
+pin memory: True
+
+Data Time percentage: 8.80 %
+Images/sec: 535.73

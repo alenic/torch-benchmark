@@ -31,7 +31,7 @@ python3 benchmark_cv.py \
   --model resnet50 \
   --batch_size 32 \
   --num_workers 4 \
-  --n_images 1000 \
+  --num_iters 64 \
   --device cuda:0
 ```
 
@@ -43,7 +43,7 @@ python3 benchmark_cv.py \
   --model resnet50 \
   --batch_size 32 \
   --num_workers 4 \
-  --n_images 1000 \
+  --num_iters 64 \
   --device cuda:0 \
   --eval
 ```
@@ -71,7 +71,7 @@ Class names are not used by the benchmark. The script only needs image files und
 - `--num_workers`: dataloader workers, default `0`
 - `--loader`: `pil` or `cv2`, default `pil`
 - `--img_size`: resize/crop size, default `224`
-- `--n_images`: number of images to process before stopping
+- `--num_iters`: number of iterations
 - `--device`: device string such as `cuda:0` or `cpu`
 - `--pin_memory`: enable dataloader pinned memory
 - `--eval`: run inference benchmark instead of training benchmark
@@ -84,7 +84,7 @@ python3 benchmark_cv.py \
   --loader cv2 \
   --batch_size 32 \
   --num_workers 4 \
-  --n_images 1000 \
+  --num_iters 64 \
   --device cuda:0
 ```
 

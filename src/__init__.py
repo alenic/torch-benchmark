@@ -1,5 +1,5 @@
 from .augmentations import *
 from .datasets import *
-from .timer import Timer
-from .cycles_cv import *
+from .cycles_cv_sync import *
+from .cycles_cv_nosync import *
 from .utils import *
