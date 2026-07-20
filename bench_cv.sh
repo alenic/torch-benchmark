@@ -10,7 +10,7 @@ do
 
         let num_workers*=2
         python3 benchmark_cv.py \
-        --root $DATASET_ROOT/imagewoof2-160/train \
+        --root $DATASET_ROOT/imagenette2-160/train \
         --batch_size $batch_size \
         --num_workers $num_workers \
         --model resnet50 \
@@ -32,7 +32,7 @@ do
         let num_workers*=2
         set -x
         python3 benchmark_cv.py \
-        --root $DATASET_ROOT/imagewoof2-160/train \
+        --root $DATASET_ROOT/imagenette2-160/train \
         --batch_size $batch_size \
         --num_workers $num_workers \
         --model resnet50 \

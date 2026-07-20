@@ -69,36 +69,35 @@ def eval_bench_cv(model, val_loader, args) -> BenchResultsNoSync:
 
     loader_iter = iter(val_loader)
 
-    with torch.inference_mode():
-        for _ in range(getattr(args, "warmup_steps", 5)):
-            try:
-                image, _ = next(loader_iter)
-            except StopIteration:
-                break
+    for _ in range(getattr(args, "warmup_steps", 5)):
+        try:
+            image, _ = next(loader_iter)
+        except StopIteration:
+            break
 
-            image = image.to(device, non_blocking=True)
-            model(image)
+        image = image.to(device, non_blocking=True)
+        model(image)
 
-        total_images = 0
-        _sync_device(device)
-        start = time.perf_counter()
+    total_images = 0
 
-        for _ in range(args.num_iters):
-            data_start = time.perf_counter()
+    _sync_device(device)
+    start = time.perf_counter()
 
-            try:
-                image, _ = next(loader_iter)
-            except StopIteration:
-                break
+    for _ in range(args.num_iters):
+        try:
+            image, _ = next(loader_iter)
+        except StopIteration:
+            break
 
-            image = image.to(device, non_blocking=True)
+        image = image.to(device, non_blocking=True)
 
-            model(image)
+        with torch.no_grad():
+            outputs = model(image)
 
-            total_images += image.size(0)
+        total_images += image.size(0)
 
-        _sync_device(device)
-        total_time = time.perf_counter() - start
+    _sync_device(device)
+    total_time = time.perf_counter() - start
 
     return BenchResultsNoSync(
         total_images=total_images,
